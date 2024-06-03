@@ -185,13 +185,13 @@ if page == "Home":
     with st.form("input_form"):
         user_inputs = {}
         for column in X.columns:
-             if column == 'grades_encoded':
+            if column == 'grades_encoded':
                 continue  # Skip the 'grades_encoded' column
-                 
+            
             if column in feature_metadata:
                 st.markdown(f"**{column}**: {feature_metadata[column]}")
             
-            # Customize input type based on each feature's data type
+            # Sesuaikan tipe input berdasarkan tipe data setiap fitur
             if column in encoding_mappings:
                 options = list(encoding_mappings[column].keys())
                 user_inputs[column] = st.selectbox(f"{column}", options=options)

@@ -185,6 +185,9 @@ if page == "Home":
     with st.form("input_form"):
         user_inputs = {}
         for column in X.columns:
+             if column == 'grades_encoded':
+                continue  # Skip the 'grades_encoded' column
+                 
             if column in feature_metadata:
                 st.markdown(f"**{column}**: {feature_metadata[column]}")
             

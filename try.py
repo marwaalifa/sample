@@ -126,7 +126,7 @@ feature_metadata = {
     "Dalc": "Workday alcohol consumption. 1: very low to 5: very high",
     "Walc": "Weekend alcohol consumption. 1: very low to 5: very high",
     "health": "Current health status. 1: very bad to 5: very good",
-    "absences": "Number of school absences. Enter an integer value between 0 and 93.",
+    "absences": "Number of school absences. Enter an integer value between 0 and 33.",
     "G1": "First period grade. Enter an integer value between 0 and 20.",
     "G2": "Second period grade. Enter an integer value between 0 and 20."
 }

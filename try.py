@@ -90,13 +90,7 @@ print(f"Precision: {precision}")
 page = st_navbar(["Home", "Data", "Feature Importance", "KNN", "Feature Dependence", "Summary"])
 
 ###################
-import streamlit as st
-import pandas as pd
-import numpy as np
 
-# Assuming knn_model, df, and X are already defined and loaded elsewhere in your script
-
-# Example metadata dictionary for features
 feature_metadata = {
     "school": "Student's school. GP: Gabriel Pereira, MS: Mousinho da Silveira",
     "sex": "Student's sex. M: Male, F: Female",
@@ -126,12 +120,12 @@ feature_metadata = {
     "Dalc": "Workday alcohol consumption. 1: very low to 5: very high",
     "Walc": "Weekend alcohol consumption. 1: very low to 5: very high",
     "health": "Current health status. 1: very bad to 5: very good",
-    "absences": "Number of school absences. Enter an integer value between 0 and 33.",
+    "absences": "Number of school absences. Enter an integer value between 0 and 93.",
     "G1": "First period grade. Enter an integer value between 0 and 20.",
     "G2": "Second period grade. Enter an integer value between 0 and 20."
 }
 
-# Encoding mappings
+# Pemetaan encoding
 encoding_mappings = {
     "school": {"GP": 0, "MS": 1},
     "sex": {"M": 0, "F": 1},
@@ -181,7 +175,7 @@ if page == "Home":
     - Ensure all required fields are filled out before submitting the form.
     """)
 
-    # Create an input form for features
+    # Membuat form input untuk fitur
     with st.form("input_form"):
         user_inputs = {}
         for column in X.columns:

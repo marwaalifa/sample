@@ -14,6 +14,7 @@ from sklearn.preprocessing import label_binarize
 from sklearn.inspection import permutation_importance
 from streamlit_navigation_bar import st_navbar
 from itertools import cycle
+import joblib
 
 # read datasets
 df = pd.read_csv("stud.csv")
@@ -46,8 +47,8 @@ print(df.head())
 df['grades_encoded'] = df['grades'].map({'A': 4, 'B': 3, 'C': 2, 'D': 1, 'E': 0})
 
 # Memisahkan fitur dan label
-X = df.drop(["grades", "G3"], axis=1)
-y = df["grades"]
+X = df.drop(["grades", "grades_encoded", "G3"], axis=1)  # Remove grades_encoded from X
+y = df["grades_encoded"]  # Use grades_encoded as labels
 
 # Membagi data menjadi data latih dan data uji
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -57,6 +58,9 @@ knn_model = KNeighborsClassifier(n_neighbors=4, metric='manhattan')
 
 # Melatih model
 knn_model.fit(X_train, y_train)
+
+# Menyimpan model yang sudah dilatih
+joblib.dump(knn_model, 'knn_model.pkl')
 
 # Melakukan prediksi
 y_pred = knn_model.predict(X_test)
@@ -84,7 +88,6 @@ roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
 # Print accuracy and precision
 print(f"Accuracy: {accuracy}")
 print(f"Precision: {precision}")
-
 
 # streamlit_navigation_bar
 page = st_navbar(["Home", "Data", "Feature Importance", "KNN", "Feature Dependence", "Summary"])
@@ -179,9 +182,6 @@ if page == "Home":
     with st.form("input_form"):
         user_inputs = {}
         for column in X.columns:
-            if column == 'grades_encoded':
-                continue  # Skip the 'grades_encoded' column
-            
             if column in feature_metadata:
                 st.markdown(f"**{column}**: {feature_metadata[column]}")
             
@@ -208,8 +208,12 @@ if page == "Home":
                 input_df = pd.DataFrame([encoded_inputs])
                 
                 # Ensure column order matches model expectations
-                input_df = input_df.reindex(columns=X.columns.difference(['grades_encoded']), fill_value=0)
+                input_df = input_df.reindex(columns=X.columns, fill_value=0)
+                
+                # Load the trained model
+                knn_model = joblib.load('knn_model.pkl')
                 
                 # Make prediction based on user input
                 prediction = knn_model.predict(input_df)
-                st.success(f"Predicted Grade: {prediction[0]}")
+                grade_mapping = {4: 'A', 3: 'B', 2: 'C', 1: 'D', 0: 'E'}
+                st.success(f"Predicted Grade: {grade_mapping[prediction[0]]}")

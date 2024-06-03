@@ -211,7 +211,7 @@ if page == "Home":
                 input_df = pd.DataFrame([encoded_inputs])
                 
                 # Ensure column order matches model expectations
-                input_df = input_df.reindex(columns=X.columns, fill_value=0)
+                input_df = input_df.reindex(columns=X.columns.difference(['grades_encoded']), fill_value=0)
                 
                 # Make prediction based on user input
                 prediction = knn_model.predict(input_df)

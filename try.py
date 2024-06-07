@@ -119,6 +119,7 @@ feature_metadata = {
     "internet": "Internet access at home. no, yes",
     "romantic": "With a romantic relationship. no, yes",
     "famrel": "Quality of family relationships. 1: very bad to 5: excellent",
+    "freetime": "free time after school. 1: very low to 5: very high",
     "goout": "Going out with friends. 1: very low to 5: very high",
     "Dalc": "Workday alcohol consumption. 1: very low to 5: very high",
     "Walc": "Weekend alcohol consumption. 1: very low to 5: very high",

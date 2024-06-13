@@ -86,6 +86,64 @@ print(f"Accuracy: {accuracy}")
 print(f"Precision: {precision}")
 
 
+# Metadata and encoding mappings
+feature_metadata = {
+    "school": "Student's school. GP: Gabriel Pereira, MS: Mousinho da Silveira",
+    "sex": "Student's sex. M: Male, F: Female",
+    "age": "Student's age. Enter an integer value between 15 and 22.",
+    "address": "Student's home address type. R: Rural, U: Urban",
+    "famsize": "Family size. LE3: Less than or equal to 3, GT3: Greater than 3",
+    "Pstatus": "Parent's cohabitation status. A: Apart, T: Together",
+    "Medu": "Mother's education. 0: none to 4: higher education",
+    "Fedu": "Father's education. 0: none to 4: higher education",
+    "Mjob": "Mother's job. at_home, health, other, services, teacher",
+    "Fjob": "Father's job. at_home, health, other, services, teacher",
+    "reason": "Reason to choose this school. course, other, home, reputation",
+    "guardian": "Student's guardian. mother, father, other",
+    "traveltime": "Home to school travel time. 1: <15 min, 2: 15-30 min, 3: 30-60 min, 4: >1 hour",
+    "studytime": "Weekly study time. 1: <2 hours, 2: 2-5 hours, 3: 5-10 hours, 4: >10 hours",
+    "failures": "Number of past class failures. Enter an integer value between 0 and 4.",
+    "schoolsup": "Extra educational support. no, yes",
+    "famsup": "Family educational support. no, yes",
+    "paid": "Extra paid classes. no, yes",
+    "activities": "Extra-curricular activities. no, yes",
+    "nursery": "Attended nursery school. no, yes",
+    "higher": "Wants to take higher education. no, yes",
+    "internet": "Internet access at home. no, yes",
+    "romantic": "With a romantic relationship. no, yes",
+    "famrel": "Quality of family relationships. 1: very bad to 5: excellent",
+    "freetime": "Free time after school. 1: very low to 5: very high",
+    "goout": "Going out with friends. 1: very low to 5: very high",
+    "Dalc": "Workday alcohol consumption. 1: very low to 5: very high",
+    "Walc": "Weekend alcohol consumption. 1: very low to 5: very high",
+    "health": "Current health status. 1: very bad to 5: very good",
+    "absences": "Number of school absences. Enter an integer value between 0 and 33.",
+    "G1": "First period grade. Enter an integer value between 0 and 20.",
+    "G2": "Second period grade. Enter an integer value between 0 and 20."
+}
+
+encoding_mappings = {
+    "school": {"GP": 0, "MS": 1},
+    "sex": {"M": 0, "F": 1},
+    "address": {"R": 0, "U": 1},
+    "famsize": {"LE3": 0, "GT3": 1},
+    "Pstatus": {"A": 0, "T": 1},
+    "Mjob": {"at_home": 0, "health": 1, "other": 2, "services": 3, "teacher": 4},
+    "Fjob": {"at_home": 0, "health": 1, "other": 2, "services": 3, "teacher": 4},
+    "reason": {"course": 0, "other": 1, "home": 2, "reputation": 3},
+    "guardian": {"mother": 0, "father": 1, "other": 2},
+    "schoolsup": {"no": 0, "yes": 1},
+    "famsup": {"no": 0, "yes": 1},
+    "paid": {"no": 0, "yes": 1},
+    "activities": {"no": 0, "yes": 1},
+    "nursery": {"no": 0, "yes": 1},
+    "higher": {"no": 0, "yes": 1},
+    "internet": {"no": 0, "yes": 1},
+    "romantic": {"no": 0, "yes": 1},
+}
+
+
+
 # streamlit_navigation_bar
 page = st_navbar(["Home", "Data", "Feature Importance", "KNN", "Feature Dependence", "Summary"])
 
@@ -113,15 +171,16 @@ if page == "Home":
     # Membuat form input untuk fitur
     with st.form("input_form"):
         inputs = {}
-        for column in X.columns:
+        for column in columns:        #changessss
             # Anda dapat menyesuaikan tipe input berdasarkan tipe data setiap fitur
-            if df[column].dtype == 'int64':
-                inputs[column] = st.number_input(f"{column}", min_value=int(df[column].min()), max_value=int(df[column].max()), value=int(df[column].mean()))
-            elif df[column].dtype == 'float64':
-                inputs[column] = st.number_input(f"{column}", min_value=float(df[column].min()), max_value=float(df[column].max()), value=float(df[column].mean()))
+            for feature in feature_metadata:
+            if df[column].dtype == 'int64':        #changessss
+                inputs[column] = st.number_input(f"**{feature}** {description} "", min_value=int(df[column].min()), max_value=int(df[column].max()), value=int(df[column].mean()))
+            elif df[column].dtype == 'float64':        #changessss
+                inputs[column] = st.number_input(f"**{feature}** {description} ", min_value=float(df[column].min()), max_value=float(df[column].max()), value=float(df[column].mean()))
             else:
-                unique_values = df[column].unique()
-                inputs[column] = st.selectbox(f"{column}", options=unique_values, index=0)
+                unique_values = df[column].unique()                    #changessss
+                inputs[column] = st.selectbox(f"**{feature}** {description} ", options=unique_values, index=0)
             
         submitted = st.form_submit_button("Generate Grades")
         st.spinner()
